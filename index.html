@@ -1,115 +1,270 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sistema Seguro</title>
+<title>Presente Especial</title>
 
 <style>
+
 body{
-background:black;
-color:#00ff9c;
-font-family:monospace;
+margin:0;
+font-family:Arial;
 text-align:center;
-padding:20px;
+background:#0f0f0f;
+color:white;
+overflow-x:hidden;
 }
 
-#terminal{
-margin-top:40px;
-min-height:120px;
+/* corações */
+
+.coracao{
+position:fixed;
+top:-10px;
+font-size:20px;
+animation:cair 6s linear infinite;
+color:#ff4d6d;
 }
 
-input{
-background:black;
-border:1px solid #00ff9c;
-color:#00ff9c;
-padding:12px;
-font-size:18px;
+@keyframes cair{
+0%{transform:translateY(-10px)}
+100%{transform:translateY(110vh)}
+}
+
+/* telas */
+
+.tela{
+display:none;
+padding:40px;
+}
+
+/* botão */
+
+button{
+padding:12px 30px;
+font-size:16px;
+border:none;
+border-radius:10px;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+}
+
+/* quiz */
+
+#barra{
 width:80%;
-max-width:300px;
-margin-top:20px;
+height:20px;
+background:#333;
+margin:20px auto;
+border-radius:10px;
+overflow:hidden;
 }
 
-.glow{
-animation: brilho 1s infinite alternate;
+#progresso{
+height:100%;
+width:0%;
+background:#ff4d6d;
 }
 
-@keyframes brilho{
-from{text-shadow:0 0 5px #00ff9c}
-to{text-shadow:0 0 20px #00ff9c}
+/* caixa de presente */
+
+.caixa{
+width:150px;
+height:150px;
+margin:40px auto;
+position:relative;
+cursor:pointer;
 }
+
+.tampa{
+width:150px;
+height:40px;
+background:#ff4d6d;
+position:absolute;
+top:0;
+transition:1s;
+}
+
+.base{
+width:150px;
+height:110px;
+background:#ff758f;
+position:absolute;
+bottom:0;
+}
+
+.aberta .tampa{
+transform:rotate(-40deg) translateY(-60px);
+}
+
 </style>
 </head>
+
 <body>
 
-<div id="terminal"></div>
-<input id="senha" placeholder="Digite a senha secreta" />
-<div id="resultado"></div>
+<!-- música -->
+
+<audio id="musica" loop>
+<source src="pride.mp3" type="audio/mpeg">
+</audio>
+
+<!-- TELA INICIAL -->
+
+<div id="tela1" class="tela" style="display:block">
+
+<h1>🎁 Existe um presente para você</h1>
+
+<p>Mas ele só será liberado se acertar o quiz 😌</p>
+
+<button onclick="iniciar()">Começar</button>
+
+</div>
+
+<!-- QUIZ -->
+
+<div id="quiz" class="tela">
+
+<h2 id="pergunta"></h2>
+
+<input id="resposta" placeholder="Digite sua resposta">
+
+<br><br>
+
+<button onclick="verificar()">Responder</button>
+
+<div id="barra">
+<div id="progresso"></div>
+</div>
+
+<p id="tentativas"></p>
+
+</div>
+
+<!-- PRESENTE -->
+
+<div id="presente" class="tela">
+
+<h1>🎉 Você conseguiu!</h1>
+
+<p>Clique no presente para abrir</p>
+
+<div class="caixa" onclick="abrirPresente()" id="caixa">
+
+<div class="tampa"></div>
+<div class="base"></div>
+
+</div>
+
+<div id="site" style="display:none">
+
+<!-- COLE SEU SITE ATUAL AQUI -->
+
+</div>
+
+</div>
 
 <script>
 
-const linhas=[
-"Iniciando sistema...",
-"Acessando servidor seguro...",
-"Identificando usuário...",
-"Usuário encontrado: Samuel",
-"Protocolo de segurança ativado",
-"Digite a senha para desbloquear"
+/* quiz */
+
+let perguntas=[
+{p:"Há quantos dias estamos juntos?",r:"313"},
+{p:"Onde foi nossa primeira foto juntos?",r:"sapuca"}
 ]
 
-let i=0
-
-function digitar(){
-if(i<linhas.length){
-document.getElementById("terminal").innerHTML+=linhas[i]+"<br>"
-i++
-setTimeout(digitar,900)
-}
-}
-
-digitar()
-
+let atual=0
 let tentativas=0
 
-document.getElementById("senha").addEventListener("keydown",function(e){
+function iniciar(){
 
-if(e.key==="Enter"){
+document.getElementById("tela1").style.display="none"
+document.getElementById("quiz").style.display="block"
 
-let valor=this.value.trim().toLowerCase()
+document.getElementById("musica").play()
 
-if(valor==="eu te amo"){
+mostrarPergunta()
 
-document.getElementById("resultado").innerHTML=`
+criarCoracoes()
 
-<h2 class="glow">ACESSO AUTORIZADO</h2>
-<h3>Samuel ❤️</h3>
-<h1 class="glow">VALE PRESENTE</h1>
-<h1>Vale 1000 em roupas</h1>
-<h3>#banho de loja</h3>
-<p>"A melhor invasão da minha vida foi você no meu coração. feliz aniversário, meu amor"</p>
+}
 
-`
-}else{
+function mostrarPergunta(){
+
+document.getElementById("pergunta").innerText=perguntas[atual].p
+document.getElementById("resposta").value=""
+
+let progresso=(atual/perguntas.length)*100
+document.getElementById("progresso").style.width=progresso+"%"
+
+}
+
+function verificar(){
+
+let r=document.getElementById("resposta").value.toLowerCase()
 
 tentativas++
+document.getElementById("tentativas").innerText="Tentativas: "+tentativas
 
-if(tentativas>=3){
-document.getElementById("resultado").innerHTML="<h2>SISTEMA BLOQUEADO</h2>"
+if(r.includes(perguntas[atual].r)){
+
+atual++
+
+if(atual<perguntas.length){
+
+mostrarPergunta()
+
 }else{
-document.getElementById("resultado").innerHTML="Senha incorreta"
-}
+
+document.getElementById("quiz").style.display="none"
+document.getElementById("presente").style.display="block"
 
 }
 
-this.value=""
+}else{
+
+alert("Resposta errada 😅 tenta lembrar")
+
 }
 
-})
+}
+
+/* presente */
+
+function abrirPresente(){
+
+let caixa=document.getElementById("caixa")
+
+caixa.classList.add("aberta")
+
+setTimeout(()=>{
+document.getElementById("site").style.display="block"
+},1000)
+
+}
+
+/* corações */
+
+function criarCoracoes(){
+
+setInterval(()=>{
+
+let coracao=document.createElement("div")
+coracao.classList.add("coracao")
+
+coracao.style.left=Math.random()*100+"vw"
+coracao.innerHTML="❤️"
+
+document.body.appendChild(coracao)
+
+setTimeout(()=>{
+coracao.remove()
+},6000)
+
+},300)
+
+}
 
 </script>
 
 </body>
-
 </html>
-
-
