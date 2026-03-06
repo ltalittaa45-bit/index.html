@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-
 <meta charset="UTF-8">
 <title>Presente</title>
 
@@ -13,12 +12,12 @@ color:white;
 font-family:Arial;
 text-align:center;
 margin:0;
-overflow:hidden;
+padding-top:100px;
 }
 
 button{
 padding:12px 25px;
-font-size:16px;
+font-size:18px;
 background:#ff4d6d;
 border:none;
 border-radius:10px;
@@ -29,37 +28,22 @@ cursor:pointer;
 input{
 padding:10px;
 font-size:16px;
-border-radius:6px;
-border:none;
 }
 
 .tela{
 display:none;
-padding-top:120px;
-}
-
-.coracao{
-position:fixed;
-top:-10px;
-font-size:20px;
-animation:cair 6s linear infinite;
-}
-
-@keyframes cair{
-0%{transform:translateY(-10px)}
-100%{transform:translateY(110vh)}
 }
 
 .caixa{
-width:160px;
-height:160px;
+width:150px;
+height:150px;
 margin:auto;
 cursor:pointer;
 position:relative;
 }
 
 .tampa{
-width:160px;
+width:150px;
 height:40px;
 background:red;
 position:absolute;
@@ -68,21 +52,15 @@ transition:1s;
 }
 
 .base{
-width:160px;
-height:120px;
+width:150px;
+height:110px;
 background:#ff8080;
 position:absolute;
 bottom:0;
 }
 
 .aberta .tampa{
-transform:rotate(-40deg) translateY(-70px);
-}
-
-#terminal{
-font-family:monospace;
-margin-top:40px;
-color:#00ff9c;
+transform:rotate(-40deg) translateY(-60px);
 }
 
 </style>
@@ -91,23 +69,17 @@ color:#00ff9c;
 
 <body>
 
-<audio id="musica" loop>
-<source src="pride.mp3" type="audio/mpeg">
-</audio>
-
-<div id="inicio" class="tela" style="display:block">
+<div id="inicio">
 
 <h1>🎁 Existe um presente para você</h1>
 
-<p>Mas primeiro você precisa passar pelo quiz</p>
-
-<button onclick="iniciar()">Começar</button>
+<button onclick="comecar()">Começar</button>
 
 </div>
 
 <div id="quiz" class="tela">
 
-<h2 id="pergunta"></h2>
+<h2>Há quantos dias estamos juntos?</h2>
 
 <input id="resposta">
 
@@ -115,40 +87,26 @@ color:#00ff9c;
 
 <button onclick="verificar()">Responder</button>
 
-<p id="tentativas"></p>
-
 </div>
 
 <div id="presente" class="tela">
 
-<h1>🎉 Parabéns</h1>
+<h2>🎉 Você acertou</h2>
 
 <p>Clique no presente</p>
 
-<div class="caixa" id="caixa" onclick="abrirPresente()">
+<div class="caixa" id="caixa" onclick="abrir()">
 
 <div class="tampa"></div>
 <div class="base"></div>
 
 </div>
 
-<div id="site" style="display:none">
+<div id="conteudo" style="display:none">
 
-<div id="terminal">
+<h1>❤️ Vale 1000 em roupas ❤️</h1>
 
-<h2>ACESSO LIBERADO ❤️</h2>
-
-<p>Digite a senha</p>
-
-<input id="senha" placeholder="Digite a senha">
-
-<br><br>
-
-<button onclick="verificarSenha()">Entrar</button>
-
-<div id="resultado"></div>
-
-</div>
+<p>Esse é seu presente</p>
 
 </div>
 
@@ -156,109 +114,39 @@ color:#00ff9c;
 
 <script>
 
-let perguntas=[
-{p:"Há quantos dias estamos juntos?",r:"313"},
-{p:"Onde foi nossa primeira foto juntos?",r:"sapuca"}
-]
-
-let atual=0
-let tentativas=0
-
-function iniciar(){
+function comecar(){
 
 document.getElementById("inicio").style.display="none"
 document.getElementById("quiz").style.display="block"
-
-document.getElementById("musica").play()
-
-coracoes()
-
-mostrar()
-
-}
-
-function mostrar(){
-
-document.getElementById("pergunta").innerText=perguntas[atual].p
 
 }
 
 function verificar(){
 
-let r=document.getElementById("resposta").value.toLowerCase()
+let r=document.getElementById("resposta").value
 
-tentativas++
-
-document.getElementById("tentativas").innerText="Tentativas: "+tentativas
-
-if(r.includes(perguntas[atual].r)){
-
-atual++
-
-if(atual<perguntas.length){
-
-mostrar()
-
-}else{
+if(r=="313"){
 
 document.getElementById("quiz").style.display="none"
 document.getElementById("presente").style.display="block"
 
-}
-
 }else{
 
-alert("Resposta errada 😅")
+alert("Resposta errada")
 
 }
 
 }
 
-function abrirPresente(){
+function abrir(){
 
 document.getElementById("caixa").classList.add("aberta")
 
 setTimeout(()=>{
 
-document.getElementById("site").style.display="block"
+document.getElementById("conteudo").style.display="block"
 
-},1200)
-
-}
-
-function verificarSenha(){
-
-let senha=document.getElementById("senha").value
-
-if(senha=="amor"){
-
-document.getElementById("resultado").innerHTML="<h2>Vale 1000 em roupas ❤️</h2>"
-
-}else{
-
-document.getElementById("resultado").innerText="Senha incorreta"
-
-}
-
-}
-
-function coracoes(){
-
-setInterval(()=>{
-
-let c=document.createElement("div")
-
-c.className="coracao"
-
-c.innerHTML="❤️"
-
-c.style.left=Math.random()*100+"vw"
-
-document.body.appendChild(c)
-
-setTimeout(()=>{c.remove()},6000)
-
-},300)
+},1000)
 
 }
 
