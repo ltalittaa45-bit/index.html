@@ -1,28 +1,48 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
-<title>Presente Especial</title>
+<title>Presente</title>
 
 <style>
 
 body{
-margin:0;
+background:black;
+color:white;
 font-family:Arial;
 text-align:center;
-background:#0f0f0f;
-color:white;
-overflow-x:hidden;
+margin:0;
+overflow:hidden;
 }
 
-/* corações */
+button{
+padding:12px 25px;
+font-size:16px;
+background:#ff4d6d;
+border:none;
+border-radius:10px;
+color:white;
+cursor:pointer;
+}
+
+input{
+padding:10px;
+font-size:16px;
+border-radius:6px;
+border:none;
+}
+
+.tela{
+display:none;
+padding-top:120px;
+}
 
 .coracao{
 position:fixed;
 top:-10px;
 font-size:20px;
 animation:cair 6s linear infinite;
-color:#ff4d6d;
 }
 
 @keyframes cair{
@@ -30,238 +50,111 @@ color:#ff4d6d;
 100%{transform:translateY(110vh)}
 }
 
-/* telas */
-
-.tela{
-display:none;
-padding:40px;
-}
-
-/* botão */
-
-button{
-padding:12px 30px;
-font-size:16px;
-border:none;
-border-radius:10px;
-background:#ff4d6d;
-color:white;
-cursor:pointer;
-}
-
-/* quiz */
-
-#barra{
-width:80%;
-height:20px;
-background:#333;
-margin:20px auto;
-border-radius:10px;
-overflow:hidden;
-}
-
-#progresso{
-height:100%;
-width:0%;
-background:#ff4d6d;
-}
-
-/* caixa de presente */
-
 .caixa{
-width:150px;
-height:150px;
-margin:40px auto;
-position:relative;
+width:160px;
+height:160px;
+margin:auto;
 cursor:pointer;
+position:relative;
 }
 
 .tampa{
-width:150px;
+width:160px;
 height:40px;
-background:#ff4d6d;
+background:red;
 position:absolute;
 top:0;
 transition:1s;
 }
 
 .base{
-width:150px;
-height:110px;
-background:#ff758f;
+width:160px;
+height:120px;
+background:#ff8080;
 position:absolute;
 bottom:0;
 }
 
 .aberta .tampa{
-transform:rotate(-40deg) translateY(-60px);
+transform:rotate(-40deg) translateY(-70px);
+}
+
+#terminal{
+font-family:monospace;
+margin-top:40px;
+color:#00ff9c;
 }
 
 </style>
+
 </head>
 
 <body>
-
-<!-- música -->
 
 <audio id="musica" loop>
 <source src="pride.mp3" type="audio/mpeg">
 </audio>
 
-<!-- TELA INICIAL -->
-
-<div id="tela1" class="tela" style="display:block">
+<div id="inicio" class="tela" style="display:block">
 
 <h1>🎁 Existe um presente para você</h1>
 
-<p>Mas ele só será liberado se acertar o quiz 😌</p>
+<p>Mas primeiro você precisa passar pelo quiz</p>
 
 <button onclick="iniciar()">Começar</button>
 
 </div>
 
-<!-- QUIZ -->
-
 <div id="quiz" class="tela">
 
 <h2 id="pergunta"></h2>
 
-<input id="resposta" placeholder="Digite sua resposta">
+<input id="resposta">
 
 <br><br>
 
 <button onclick="verificar()">Responder</button>
 
-<div id="barra">
-<div id="progresso"></div>
-</div>
-
 <p id="tentativas"></p>
 
 </div>
 
-<!-- PRESENTE -->
-
 <div id="presente" class="tela">
 
-<h1>🎉 Você conseguiu!</h1>
+<h1>🎉 Parabéns</h1>
 
-<p>Clique no presente para abrir</p>
+<p>Clique no presente</p>
 
-<div class="caixa" onclick="abrirPresente()" id="caixa">
+<div class="caixa" id="caixa" onclick="abrirPresente()">
 
 <div class="tampa"></div>
 <div class="base"></div>
 
 </div>
+
 <div id="site" style="display:none">
 
-<h1>Vale 1000 em roupas</h1>
-<p>Esse é seu presente ❤️</p>
-<img src="presente.png">
+<div id="terminal">
+
+<h2>ACESSO LIBERADO ❤️</h2>
+
+<p>Digite a senha</p>
+
+<input id="senha" placeholder="Digite a senha">
+
+<br><br>
+
+<button onclick="verificarSenha()">Entrar</button>
+
+<div id="resultado"></div>
 
 </div>
-
-<style>
-body{
-background:black;
-color:#00ff9c;
-font-family:monospace;
-text-align:center;
-margin-top:100px;
-}
-
-input{
-background:black;
-border:1px solid #00ff9c;
-color:#00ff9c;
-padding:10px;
-font-size:18px;
-}
-</style>
-
-<script>
-
-const linhas=[
-"Iniciando sistema...",
-"Acessando servidor...",
-"Identificando usuário...",
-"Usuário encontrado: Samuel",
-"Protocolo de segurança ativado",
-"Digite a senha para desbloquear"
-]
-
-let i=0
-
-function digitar(){
-
-if(i<linhas.length){
-
-document.getElementById("terminal").innerHTML+=linhas[i]+"<br>"
-
-i++
-
-setTimeout(digitar,1000)
-
-}
-
-}
-
-digitar()
-
-let tentativas=0
-
-document.getElementById("senha").addEventListener("keypress",function(e){
-
-if(e.key==="Enter"){
-
-if(this.value.toLowerCase()=="eu te amo"){
-
-document.getElementById("resultado").innerHTML=`
-
-<h2>ACESSO AUTORIZADO</h2>
-
-Samuel ❤️
-
-<h1>VALE PRESENTE</h1>
-
-<h1>R$1000</h1>
-
-"A melhor invasão da minha vida foi você no meu coração."
-
-`
-
-}else{
-
-tentativas++
-
-if(tentativas>=3){
-
-document.getElementById("resultado").innerHTML="SISTEMA BLOQUEADO"
-
-}else{
-
-document.getElementById("resultado").innerHTML="Senha incorreta"
-
-}
-
-}
-
-this.value=""
-
-}
-
-})
-
-</script>
 
 </div>
 
 </div>
 
 <script>
-
-/* quiz */
 
 let perguntas=[
 {p:"Há quantos dias estamos juntos?",r:"313"},
@@ -273,24 +166,20 @@ let tentativas=0
 
 function iniciar(){
 
-document.getElementById("tela1").style.display="none"
+document.getElementById("inicio").style.display="none"
 document.getElementById("quiz").style.display="block"
 
 document.getElementById("musica").play()
 
-mostrarPergunta()
+coracoes()
 
-criarCoracoes()
+mostrar()
 
 }
 
-function mostrarPergunta(){
+function mostrar(){
 
 document.getElementById("pergunta").innerText=perguntas[atual].p
-document.getElementById("resposta").value=""
-
-let progresso=(atual/perguntas.length)*100
-document.getElementById("progresso").style.width=progresso+"%"
 
 }
 
@@ -299,6 +188,7 @@ function verificar(){
 let r=document.getElementById("resposta").value.toLowerCase()
 
 tentativas++
+
 document.getElementById("tentativas").innerText="Tentativas: "+tentativas
 
 if(r.includes(perguntas[atual].r)){
@@ -307,7 +197,7 @@ atual++
 
 if(atual<perguntas.length){
 
-mostrarPergunta()
+mostrar()
 
 }else{
 
@@ -318,43 +208,55 @@ document.getElementById("presente").style.display="block"
 
 }else{
 
-alert("Resposta errada 😅 tenta lembrar")
+alert("Resposta errada 😅")
 
 }
 
 }
-
-/* presente */
 
 function abrirPresente(){
 
-let caixa=document.getElementById("caixa")
-
-caixa.classList.add("aberta")
+document.getElementById("caixa").classList.add("aberta")
 
 setTimeout(()=>{
+
 document.getElementById("site").style.display="block"
-},1000)
+
+},1200)
 
 }
 
-/* corações */
+function verificarSenha(){
 
-function criarCoracoes(){
+let senha=document.getElementById("senha").value
+
+if(senha=="amor"){
+
+document.getElementById("resultado").innerHTML="<h2>Vale 1000 em roupas ❤️</h2>"
+
+}else{
+
+document.getElementById("resultado").innerText="Senha incorreta"
+
+}
+
+}
+
+function coracoes(){
 
 setInterval(()=>{
 
-let coracao=document.createElement("div")
-coracao.classList.add("coracao")
+let c=document.createElement("div")
 
-coracao.style.left=Math.random()*100+"vw"
-coracao.innerHTML="❤️"
+c.className="coracao"
 
-document.body.appendChild(coracao)
+c.innerHTML="❤️"
 
-setTimeout(()=>{
-coracao.remove()
-},6000)
+c.style.left=Math.random()*100+"vw"
+
+document.body.appendChild(c)
+
+setTimeout(()=>{c.remove()},6000)
 
 },300)
 
@@ -364,5 +266,3 @@ coracao.remove()
 
 </body>
 </html>
-
-
