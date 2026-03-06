@@ -1,174 +1,88 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Presente</title>
+<title>Quiz Especial</title>
 
 <style>
-
 body{
-background:black;
-color:white;
-font-family:Arial;
+font-family: Arial;
 text-align:center;
-margin:0;
-padding-top:100px;
+background:#ffe6f0;
+padding:40px;
+}
+
+.quiz{
+background:white;
+padding:20px;
+border-radius:10px;
+max-width:400px;
+margin:auto;
 }
 
 button{
-padding:12px 25px;
-font-size:18px;
-background:#ff4d6d;
-border:none;
-border-radius:10px;
-color:white;
+padding:10px 20px;
+margin-top:10px;
 cursor:pointer;
 }
 
-input{
-padding:10px;
-font-size:16px;
-}
-
-.tela{
+#presente{
 display:none;
-}
-
-.caixa{
-width:150px;
-height:150px;
-margin:auto;
+margin-top:40px;
+font-size:60px;
 cursor:pointer;
-position:relative;
 }
 
-.tampa{
-width:150px;
-height:40px;
-background:red;
-position:absolute;
-top:0;
-transition:1s;
+#premio{
+display:none;
+margin-top:20px;
+font-size:24px;
+color:#e60073;
+font-weight:bold;
 }
-
-.base{
-width:150px;
-height:110px;
-background:#ff8080;
-position:absolute;
-bottom:0;
-}
-
-.aberta .tampa{
-transform:rotate(-40deg) translateY(-60px);
-}
-
 </style>
-
 </head>
 
 <body>
 
-<div id="inicio">
+<div class="quiz">
 
-<h1>🎁 Existe um presente para você</h1>
+<h2>Responda para abrir o presente 🎁</h2>
 
-<button onclick="comecar()">Começar</button>
+<p>Qual é a cor do amor?</p>
 
-</div>
-
-<div id="quiz" class="tela">
-
-<h2>Há quantos dias estamos juntos?</h2>
-
-<input id="resposta">
-
-<br><br>
-
-<button onclick="verificar()">Responder</button>
+<button onclick="acertou()">Vermelho</button>
+<button onclick="errou()">Azul</button>
+<button onclick="errou()">Verde</button>
 
 </div>
 
-<div id="presente" class="tela">
-
-<h2>🎉 Você acertou</h2>
-
-<p>Clique no presente</p>
-
-<div class="caixa" id="caixa" onclick="abrir()">
-
-<div class="tampa"></div>
-<div class="base"></div>
-
+<div id="presente" onclick="abrirPresente()">
+🎁
 </div>
 
-<div id="conteudo" style="display:none">
-<div id="conteudo" style="display:none">
-
-<h1>🎁 Seu presente</h1>
-
-<div id="terminal">
-<p>Digite a senha para liberar seu presente</p>
-</div>
-
-<br>
-
-<input id="senha" placeholder="Digite a senha">
-
-<br><br>
-
-<button onclick="verificarSenha()">Entrar</button>
-
-<div id="resultado"></div>
-
-</div>
-
-
-
-</div>
-
+<div id="premio">
+🎉 PARABÉNS! 🎉<br><br>
+Você ganhou um<br>
+💳 VALE DE R$1000 EM ROUPAS 💳
 </div>
 
 <script>
 
-function comecar(){
-
-document.getElementById("inicio").style.display="none"
-document.getElementById("quiz").style.display="block"
-
+function acertou(){
+alert("Resposta correta! Agora abra seu presente 🎁");
+document.getElementById("presente").style.display="block";
 }
 
-function verificar(){
-
-let r=document.getElementById("resposta").value
-
-if(r=="313"){
-
-document.getElementById("quiz").style.display="none"
-document.getElementById("presente").style.display="block"
-
-}else{
-
-alert("Resposta errada")
-
+function errou(){
+alert("Resposta errada! Tente novamente.");
 }
 
-}
-
-function abrir(){
-
-document.getElementById("caixa").classList.add("aberta")
-
-setTimeout(()=>{
-
-document.getElementById("conteudo").style.display="block"
-
-},1000)
-
+function abrirPresente(){
+document.getElementById("premio").style.display="block";
 }
 
 </script>
 
 </body>
 </html>
-
