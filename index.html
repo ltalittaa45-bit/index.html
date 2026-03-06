@@ -157,7 +157,104 @@ transform:rotate(-40deg) translateY(-60px);
 
 <div id="site" style="display:none">
 
-<!-- COLE SEU SITE ATUAL AQUI -->
+<!-- COLE SEU SITE ATUAL AQUI --><div id="terminal"></div>
+
+<input id="senha" placeholder="Digite a senha" />
+
+<div id="resultado"></div>
+
+<style>
+body{
+background:black;
+color:#00ff9c;
+font-family:monospace;
+text-align:center;
+margin-top:100px;
+}
+
+input{
+background:black;
+border:1px solid #00ff9c;
+color:#00ff9c;
+padding:10px;
+font-size:18px;
+}
+</style>
+
+<script>
+
+const linhas=[
+"Iniciando sistema...",
+"Acessando servidor...",
+"Identificando usuário...",
+"Usuário encontrado: Samuel",
+"Protocolo de segurança ativado",
+"Digite a senha para desbloquear"
+]
+
+let i=0
+
+function digitar(){
+
+if(i<linhas.length){
+
+document.getElementById("terminal").innerHTML+=linhas[i]+"<br>"
+
+i++
+
+setTimeout(digitar,1000)
+
+}
+
+}
+
+digitar()
+
+let tentativas=0
+
+document.getElementById("senha").addEventListener("keypress",function(e){
+
+if(e.key==="Enter"){
+
+if(this.value.toLowerCase()=="eu te amo"){
+
+document.getElementById("resultado").innerHTML=`
+
+<h2>ACESSO AUTORIZADO</h2>
+
+Samuel ❤️
+
+<h1>VALE PRESENTE</h1>
+
+<h1>R$1000</h1>
+
+"A melhor invasão da minha vida foi você no meu coração."
+
+`
+
+}else{
+
+tentativas++
+
+if(tentativas>=3){
+
+document.getElementById("resultado").innerHTML="SISTEMA BLOQUEADO"
+
+}else{
+
+document.getElementById("resultado").innerHTML="Senha incorreta"
+
+}
+
+}
+
+this.value=""
+
+}
+
+})
+
+</script>
 
 </div>
 
@@ -268,3 +365,4 @@ coracao.remove()
 
 </body>
 </html>
+
